@@ -9,7 +9,7 @@ from lief import PE
 from lief.PE import oid_to_string
 
 from lief import Logger
-Logger.set_level(lief.LOGGING_LEVEL.GLOBAL)
+Logger.set_level(lief.LOGGING_LEVEL.INFO)
 
 from optparse import OptionParser
 import sys
@@ -342,6 +342,16 @@ def print_resources(binary):
 
     print("")
 
+@exceptions_handler(Exception)
+def print_load_configuration(binary):
+    print("== Load Configuration ==")
+    config = binary.load_configuration
+
+    print(config)
+
+    print("")
+
+
 
 
 def main():
@@ -407,6 +417,11 @@ def main():
             help='Display exported functions/libraries')
 
 
+    optparser.add_option('--load-config',
+            action='store_true', dest='show_loadconfig',
+            help='Display load configuration')
+
+
 
     options, args = optparser.parse_args()
 
@@ -459,6 +474,9 @@ def main():
 
     if (options.show_resources or options.show_all) and binary.has_resources:
         print_resources(binary)
+
+    if (options.show_loadconfig or options.show_all) and binary.has_configuration:
+        print_load_configuration(binary)
 
 if __name__ == "__main__":
     main()
