@@ -210,14 +210,18 @@ void Parser::build_sections(void) {
 
 
     try {
-      const uint8_t* ptr_to_rawdata = reinterpret_cast<const uint8_t*>(this->stream_->read(
-        offset,
-        size_to_read));
+      if (size_to_read > Parser::MAX_DATA_SIZE) {
+        LOG(WARNING) << "Section '" << section->name() << "' data is too large!";
+      } else {
+        const uint8_t* ptr_to_rawdata = reinterpret_cast<const uint8_t*>(this->stream_->read(
+          offset,
+          size_to_read));
 
-      section->content_ = {
-        ptr_to_rawdata,
-        ptr_to_rawdata + size_to_read
-      };
+        section->content_ = {
+          ptr_to_rawdata,
+          ptr_to_rawdata + size_to_read
+        };
+      }
     } catch (const std::bad_alloc& e) {
       LOG(WARNING) << "Section " << section->name() << " corrupted: " << e.what();
     } catch (const read_out_of_bound& e) {
