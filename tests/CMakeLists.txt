@@ -336,5 +336,5 @@ if(N EQUAL 0)
 endif()
 
 
-add_custom_target(check-lief COMMAND ${CMAKE_CTEST_COMMAND} --parallel ${N} --output-on-failure
+add_custom_target(check-lief COMMAND ${CMAKE_CTEST_COMMAND} --parallel 1 --output-on-failure
   DEPENDS lief_samples)
