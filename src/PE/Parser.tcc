@@ -271,7 +271,7 @@ void Parser::build_import_table(void) {
     }
     // Offset to the Import (Library) name
     const uint64_t offsetName = this->binary_->rva_to_offset(import.name_RVA_);
-    import.name_              = this->stream_->read_string(offsetName);
+    import.name_              = this->stream_->get_string(offsetName);
 
 
     // We assume that a DLL name should be at least 4 length size and "printable
@@ -329,7 +329,7 @@ void Parser::build_import_table(void) {
 
       if(not entry.is_ordinal()) {
 
-        entry.name_ = this->stream_->read_string(
+        entry.name_ = this->stream_->get_string(
             this->binary_->rva_to_offset(entry.hint_name_rva()) + sizeof(uint16_t));
 
         entry.hint_ = *reinterpret_cast<const uint16_t*>(

@@ -464,7 +464,7 @@ void Parser::build_symbols(void) {
         this->binary_->header().numberof_symbols() * STRUCT_SIZES::Symbol16Size +
         offset;
       try {
-        symbol.name_ = this->stream_->read_string(offset_name);
+        symbol.name_ = this->stream_->get_string(offset_name);
       } catch (const LIEF::read_out_of_bound&) { // Corrupted
         LOG(WARNING) << "Symbol name is corrupted";
       }
@@ -577,7 +577,7 @@ void Parser::build_exports(void) {
   uint32_t name_offset = this->binary_->rva_to_offset(export_directory_table->NameRVA);
 
   try {
-    export_object.name_  = this->stream_->read_string(name_offset);
+    export_object.name_  = this->stream_->get_string(name_offset);
   } catch (const LIEF::read_out_of_bound& e) {
     LOG(WARNING) << e.what();
   }
@@ -617,7 +617,7 @@ void Parser::build_exports(void) {
 
       ExportEntry entry;
       try {
-        entry.name_ = this->stream_->read_string(name_offset);
+        entry.name_ = this->stream_->get_string(name_offset);
       } catch (const LIEF::read_out_of_bound& e) {
         LOG(WARNING) << e.what();
       }
